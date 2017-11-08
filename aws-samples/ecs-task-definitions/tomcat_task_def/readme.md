@@ -6,7 +6,7 @@ Learn more: http://tomcat.apache.org/
 The Apache Tomcat software is developed in an open and participatory environment and released under the Apache License version 2. 
 
 ## Using this Task Definition
-This task definition pulls the maintained nginx image from [DockerHub](https://hub.docker.com/_/nginx/).
+This task definition pulls the maintained tomcat image from [DockerHub](https://hub.docker.com/_/tomcat/).
 
 ### Steps to Run:
 * Have an active [AWS account](https://portal.aws.amazon.com/billing/signup#/start).
@@ -15,7 +15,19 @@ This task definition pulls the maintained nginx image from [DockerHub](https://h
 * Run the task definition as a [Task](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html) or [Service](http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html).
 
 #### ECS CLI Commands
-`aws ecs register-task-definition --cli-input-json file://<path_to_json_file>/nginx.json`
+
+To register the task definition, create or download the json file from this repo and save at some loction on the local disk on your machine. Then run the below command from the command line. You wil need to have the aws cli already configured in order to run this command. Please follow the instructions to setup AWS CLI are [here](http://docs.aws.amazon.com/cli/latest/userguide/installing.html).
+
+Note - This task definition assumes that you have a CloudWatch Log Group named 'tomcat-container-logs' already created. If you want to write to a different Log Group, then change the task definition accordingly. 
+
+`aws ecs register-task-definition --cli-input-json file://<path_to_json_file>/tomcat-task-def.json`
+
+
+To run one instance of this task on an existing ECS Cluster:
+
+`aws ecs run-task --cluster <YOUR_CLUSTER_NAME> --task-definition tomcat-webserver:1 --count 1`
+
+Replace the <YOUR_CLUSTER_NAME> with the actual name of your ECS cluster. Also, if you have changed the name of the task, then change the same int he above command accordingly.
 
 ## More Info
 #### What is a Task Definition?
